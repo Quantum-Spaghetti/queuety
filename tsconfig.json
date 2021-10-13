@@ -1,15 +1,13 @@
 {
 	"compilerOptions": {
 		"target": "ES6",
-		"module": "CommonJS",
+		"module": "ES6",
 		"strict": true,
 		"declaration": true,
+    "declarationDir": "./dist",
 		"outDir": "./dist"
 	},
 	"include": ["src/**/*"],
-	"exclude": [
-		"tests",
-		"dist",
-		"node_modules"
-	]
+	"exclude": ["node_modules"]
 }
+
