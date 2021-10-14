@@ -1,4 +1,4 @@
-import Task from './interfaces/task';
+import ITask from './interfaces/ITask';
 import Queue from './queue';
 
 export default class Queuety	{
@@ -10,16 +10,21 @@ export default class Queuety	{
   queue: Queue;
   isActive: Boolean;
 
-  async newJob(task: Task) {
-    this.queue.enqueue(task);
+  async newJob(task: (args: Array<any>) => Promise<void>, ...args: Array<any>) {
+    const job: ITask = {
+      params: args,
+      method: task
+    }
+
+    this.queue.enqueue(job);
     if (!this.isActive) await this.run();
   }
 
   async run() {
     if (this.queue.peek()) {
       if (!this.isActive) this.isActive = true;
-      const task: Task = this.queue.dequeue();
-      await task.job(task.params);
+      const task: ITask = this.queue.dequeue();
+      await task.method(task.params);
       await this.run();
     } else {
       this.isActive = false;
